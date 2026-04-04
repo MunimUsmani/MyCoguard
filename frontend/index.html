@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MYCOGUARD</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+</head>
+
+<body class="bg-slate-950 text-white font-sans min-h-screen">
+  <div class="p-6 md:p-8 max-w-7xl mx-auto">
+    <header class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 border-b border-emerald-500/30 pb-6 mb-8">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-black tracking-tighter text-emerald-400">
+          MYCOGUARD // SYSTEM
+        </h1>
+        <p class="text-slate-400 text-sm">BIO-DIGITAL DEFENSE UNIT</p>
+      </div>
+
+      <div class="flex gap-3 flex-wrap">
+        <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold">
+          API: ACTIVE
+        </span>
+        <span class="bg-slate-800 text-slate-300 px-3 py-1 rounded-full text-xs font-bold">
+          MODEL: v2.4.1
+        </span>
+      </div>
+    </header>
+
+    <!-- TOP GRID -->
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <!-- MAP + STORM -->
+      <section class="xl:col-span-2 bg-slate-900/50 border border-slate-800 p-6 md:p-8 rounded-3xl backdrop-blur-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <i data-lucide="cloud-lightning" class="text-blue-400"></i>
+          <h2 class="text-xl font-bold">Storm Sentry</h2>
+        </div>
+
+        <p class="text-slate-400 text-sm mb-5">
+          Click any location on the map to predict runoff danger and identify where modular myco-filters should be deployed.
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <div class="lg:col-span-3">
+            <div id="map" class="h-[420px] rounded-2xl overflow-hidden border border-slate-800"></div>
+
+            <div class="mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+              <div class="text-sm text-slate-400">
+                Selected Point:
+                <span id="selectedCoords" class="text-emerald-400 font-semibold">Not selected</span>
+              </div>
+
+              <button
+                onclick="analyzeSelectedLocation()"
+                id="riskBtn"
+                class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-5 rounded-xl transition-all shadow-lg shadow-emerald-900/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled
+              >
+                ANALYZE SELECTED AREA
+              </button>
+            </div>
+          </div>
+
+          <div class="lg:col-span-2">
+            <div id="riskDisplay" class="space-y-4">
+              <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
+                <div class="flex justify-between border-b border-slate-800 pb-2 mb-3">
+                  <span class="text-slate-500">Status</span>
+                  <span id="stormStatus" class="font-medium text-slate-300">Awaiting map selection</span>
+                </div>
+
+                <div class="space-y-3 text-sm">
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Current Temp</span>
+                    <span id="currentTemp" class="text-slate-200 font-semibold">--</span>
+                  </div>
+
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Current Rain</span>
+                    <span id="currentRain" class="text-slate-200 font-semibold">--</span>
+                  </div>
+
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Wind Speed</span>
+                    <span id="windSpeed" class="text-slate-200 font-semibold">--</span>
+                  </div>
+
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Next 24h Rain</span>
+                    <span id="rain24h" class="text-blue-400 font-mono font-bold">--</span>
+                  </div>
+
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Next 5 Days Rain</span>
+                    <span id="rain5d" class="text-blue-400 font-mono font-bold">--</span>
+                  </div>
+                </div>
+
+                <div id="riskLevel" class="text-center p-4 rounded-xl font-black tracking-widest mt-5 bg-slate-800 text-slate-300 border border-slate-700">
+                  NO DATA
+                </div>
+              </div>
+
+              <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
+                <h3 class="text-sm uppercase tracking-wider text-slate-400 font-bold mb-3">
+                  Deployment Recommendation
+                </h3>
+
+                <p id="recommendationText" class="text-sm text-slate-300 leading-6">
+                  Select a map point to generate a deployment recommendation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI SCANNER -->
+      <section class="bg-slate-900/50 border border-slate-800 p-6 md:p-8 rounded-3xl backdrop-blur-sm">
+        <div class="flex items-center gap-3 mb-6">
+          <i data-lucide="shield-alert" class="text-emerald-400"></i>
+          <h2 class="text-xl font-bold">Myco-Scanner AI</h2>
+        </div>
+
+        <p class="text-slate-400 text-sm mb-6">
+          Upload a photo of the deployed mycelium filter to detect whether it is active, degrading, or ready for replacement.
+        </p>
+
+        <div class="border-2 border-dashed border-slate-800 rounded-2xl p-8 text-center hover:border-emerald-500/50 transition-colors">
+          <input type="file" id="imageInput" class="hidden" accept="image/png,image/jpeg,image/jpg" onchange="analyzeImage()" />
+          <label for="imageInput" class="cursor-pointer block">
+            <i data-lucide="upload" class="mx-auto mb-4 text-slate-500"></i>
+            <span class="text-emerald-400 font-bold block">Upload Mycelium Sample</span>
+            <span class="text-slate-500 text-xs mt-2 block">PNG or JPG supported</span>
+          </label>
+        </div>
+
+        <div id="imagePreviewWrap" class="mt-5 hidden">
+          <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Preview</p>
+          <img id="imagePreview" class="w-full h-52 object-cover rounded-2xl border border-slate-800" />
+        </div>
+
+        <div id="aiOutput" class="mt-6 space-y-3 hidden">
+          <div class="bg-slate-800/50 p-4 rounded-xl flex justify-between items-center">
+            <span class="text-slate-400 text-xs uppercase font-bold">Filter Health</span>
+            <span class="text-emerald-400 font-mono text-sm" id="aiStatus">--</span>
+          </div>
+
+          <div class="bg-slate-800/50 p-4 rounded-xl flex justify-between items-center">
+            <span class="text-slate-400 text-xs uppercase font-bold">Efficiency</span>
+            <span class="text-slate-200 font-semibold" id="aiEfficiency">--</span>
+          </div>
+
+          <div class="bg-slate-800/50 p-4 rounded-xl flex justify-between items-center">
+            <span class="text-slate-400 text-xs uppercase font-bold">Confidence</span>
+            <span class="text-slate-200 font-semibold" id="aiConfidence">--</span>
+          </div>
+
+          <div class="bg-slate-800/50 p-4 rounded-xl">
+            <span class="text-slate-400 text-xs uppercase font-bold block mb-2">Field Recommendation</span>
+            <p id="aiMessage" class="text-sm text-slate-200 leading-6">--</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- CLIMATE PANEL -->
+    <section class="mt-8 bg-slate-900/50 border border-slate-800 p-6 md:p-8 rounded-3xl backdrop-blur-sm">
+      <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="thermometer-sun" class="text-orange-400"></i>
+        <h2 class="text-xl font-bold">Climate Projection Snapshot</h2>
+      </div>
+
+      <p class="text-slate-400 text-sm mb-6">
+        This compares the selected area's approximate current baseline temperature with projected future warming stress.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
+          <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Current Avg Temp</p>
+          <p id="climateCurrent" class="text-2xl font-black text-emerald-400">--</p>
+        </div>
+
+        <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
+          <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Projected Avg Temp (2050)</p>
+          <p id="climateFuture" class="text-2xl font-black text-orange-400">--</p>
+        </div>
+
+        <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
+          <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Warming Delta</p>
+          <p id="climateDelta" class="text-2xl font-black text-blue-400">--</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    let selectedLat = null;
+    let selectedLng = null;
+    let selectedMarker = null;
+
+    const map = L.map("map").setView([30.3753, 69.3451], 5);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    map.on("click", function (e) {
+      const { lat, lng } = e.latlng;
+      selectedLat = Number(lat.toFixed(5));
+      selectedLng = Number(lng.toFixed(5));
+
+      if (selectedMarker) {
+        map.removeLayer(selectedMarker);
+      }
+
+      selectedMarker = L.marker([selectedLat, selectedLng]).addTo(map);
+
+      document.getElementById("selectedCoords").innerText = `${selectedLat}, ${selectedLng}`;
+      document.getElementById("riskBtn").disabled = false;
+      document.getElementById("stormStatus").innerText = "Point selected. Ready for analysis.";
+    });
+
+    function setRiskStyle(level) {
+      const riskEl = document.getElementById("riskLevel");
+
+      let classes = "text-center p-4 rounded-xl font-black tracking-widest mt-5 border ";
+      if (level === "HIGH") {
+        classes += "bg-red-900/50 text-red-400 border-red-500/50";
+      } else if (level === "MEDIUM") {
+        classes += "bg-yellow-900/50 text-yellow-300 border-yellow-500/50";
+      } else if (level === "LOW") {
+        classes += "bg-emerald-900/50 text-emerald-400 border-emerald-500/50";
+      } else {
+        classes += "bg-slate-800 text-slate-300 border-slate-700";
+      }
+
+      riskEl.className = classes;
+    }
+
+    async function analyzeSelectedLocation() {
+      if (selectedLat === null || selectedLng === null) {
+        alert("Please select a point on the map first.");
+        return;
+      }
+
+      const btn = document.getElementById("riskBtn");
+      btn.innerText = "ANALYZING...";
+      btn.disabled = true;
+
+      document.getElementById("stormStatus").innerText = "Fetching forecast and climate data...";
+
+      try {
+        const res = await fetch("http://localhost:5000/api/storm-risk", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            lat: selectedLat,
+            lng: selectedLng
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Storm risk request failed");
+        }
+
+        document.getElementById("stormStatus").innerText = "Analysis complete";
+        document.getElementById("currentTemp").innerText =
+          data.current?.temperature_c !== null && data.current?.temperature_c !== undefined
+            ? `${data.current.temperature_c} °C`
+            : "--";
+
+        document.getElementById("currentRain").innerText =
+          data.current?.rain_mm !== null && data.current?.rain_mm !== undefined
+            ? `${data.current.rain_mm} mm`
+            : "--";
+
+        document.getElementById("windSpeed").innerText =
+          data.current?.wind_speed_kmh !== null && data.current?.wind_speed_kmh !== undefined
+            ? `${data.current.wind_speed_kmh} km/h`
+            : "--";
+
+        document.getElementById("rain24h").innerText = `${data.forecast?.next24h_rain_mm ?? "--"} mm`;
+        document.getElementById("rain5d").innerText = `${data.forecast?.next5d_rain_mm ?? "--"} mm`;
+
+        document.getElementById("riskLevel").innerText =
+          `RISK: ${data.riskLevel} (${data.riskScore}/100)`;
+
+        setRiskStyle(data.riskLevel);
+
+        document.getElementById("recommendationText").innerText =
+          data.recommendation || "No recommendation returned.";
+
+        const currentAvg = data.climate?.current_avg_temp_c;
+        const futureAvg = data.climate?.future_avg_temp_2050_c;
+
+        document.getElementById("climateCurrent").innerText =
+          currentAvg !== null && currentAvg !== undefined ? `${currentAvg} °C` : "--";
+
+        document.getElementById("climateFuture").innerText =
+          futureAvg !== null && futureAvg !== undefined ? `${futureAvg} °C` : "--";
+
+        if (currentAvg !== null && currentAvg !== undefined && futureAvg !== null && futureAvg !== undefined) {
+          const delta = (futureAvg - currentAvg).toFixed(2);
+          document.getElementById("climateDelta").innerText = `${delta} °C`;
+        } else {
+          document.getElementById("climateDelta").innerText = "--";
+        }
+      } catch (err) {
+        document.getElementById("stormStatus").innerText = "Analysis failed";
+        setRiskStyle("NONE");
+        document.getElementById("riskLevel").innerText = "ERROR";
+        alert(err.message || "Backend not responding.");
+      } finally {
+        btn.innerText = "ANALYZE SELECTED AREA";
+        btn.disabled = false;
+      }
+    }
+
+    async function analyzeImage() {
+      const input = document.getElementById("imageInput");
+      const file = input.files[0];
+
+      if (!file) return;
+
+      const previewWrap = document.getElementById("imagePreviewWrap");
+      const preview = document.getElementById("imagePreview");
+
+      preview.src = URL.createObjectURL(file);
+      previewWrap.classList.remove("hidden");
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const res = await fetch("http://localhost:5000/api/analyze", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Image analysis failed");
+        }
+
+        document.getElementById("aiOutput").classList.remove("hidden");
+        document.getElementById("aiStatus").innerText = String(data.status || "--").toUpperCase();
+        document.getElementById("aiEfficiency").innerText =
+          data.efficiency !== undefined ? `${Math.round(data.efficiency * 100)}%` : "--";
+        document.getElementById("aiConfidence").innerText =
+          data.confidence !== undefined ? `${Math.round(data.confidence * 100)}%` : "--";
+        document.getElementById("aiMessage").innerText =
+          data.message || "No recommendation returned.";
+      } catch (err) {
+        alert(err.message || "AI scan failed.");
+      }
+    }
+  </script>
+</body>
+</html>
