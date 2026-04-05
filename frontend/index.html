@@ -19,53 +19,170 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""
   ></script>
+
+  <style>
+    :root {
+      --brand-green: #00bf63;
+      --brand-orange: #ff751f;
+      --page-bg-1: #020617;
+      --page-bg-2: #07112a;
+      --panel: rgba(7, 18, 46, 0.78);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --card-bg: rgba(10, 22, 52, 0.95);
+      --muted: #95a3bf;
+      --heading: #f8fafc;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(0, 191, 99, 0.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 117, 31, 0.08), transparent 26%),
+        linear-gradient(180deg, var(--page-bg-1), var(--page-bg-2));
+    }
+
+    .brand-gradient {
+      background: linear-gradient(90deg, var(--brand-green), var(--brand-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .glass-panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+    }
+
+    .soft-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .brand-btn {
+      background: linear-gradient(135deg, var(--brand-green), #03a857);
+      color: white;
+      transition: 0.2s ease;
+      box-shadow: 0 12px 28px rgba(0, 191, 99, 0.18);
+    }
+
+    .brand-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    .secondary-btn {
+      transition: 0.2s ease;
+    }
+
+    .secondary-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    .section-kicker {
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: #dbeafe;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .hero-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--brand-green);
+      box-shadow: 0 0 12px rgba(0,191,99,0.8);
+    }
+
+    .upload-box {
+      border: 2px dashed rgba(0,191,99,0.35);
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    }
+
+    .upload-box:hover {
+      border-color: rgba(0,191,99,0.6);
+      background: linear-gradient(180deg, rgba(0,191,99,0.03), rgba(255,255,255,0.02));
+    }
+
+    .preview-image {
+      box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    }
+  </style>
 </head>
 
-<body class="bg-slate-950 text-white font-sans min-h-screen">
+<body class="text-white font-sans min-h-screen">
   <div class="p-6 md:p-8 max-w-7xl mx-auto">
-    <header class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 border-b border-emerald-500/30 pb-6 mb-8">
-      <div>
-        <h1 class="text-3xl md:text-4xl font-black tracking-tighter text-emerald-400">
-          MYCOGUARD // SYSTEM
-        </h1>
-        <p class="text-slate-400 text-sm">BIO-DIGITAL DEFENSE UNIT</p>
-      </div>
+    <header class="mb-8">
+      <div class="glass-panel rounded-[2rem] px-6 py-7 md:px-8 md:py-8">
+        <div class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div class="max-w-3xl">
+            <p class="section-kicker mb-3">Bio-Digital Defense Interface</p>
 
-      <div class="flex gap-3 flex-wrap">
-        <span class="bg-emerald-950 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold">
-          API: ACTIVE
-        </span>
-        <span class="bg-slate-800 text-slate-300 px-3 py-1 rounded-full text-xs font-bold">
-          MODEL: v2.4.1
-        </span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-none">
+              <span class="brand-gradient">MYCOGUARD</span>
+            </h1>
+
+            <p class="mt-4 text-slate-300 text-base md:text-xl leading-relaxed">
+              Monitor environmental runoff risk, analyze deployed mycelium filters, and make faster field decisions from one operational dashboard.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <div class="hero-badge">
+              <span class="hero-dot"></span>
+              Production Ready
+            </div>
+            <div class="hero-badge">
+              <i data-lucide="shield-check" class="w-4 h-4" style="color:#ff751f"></i>
+              Smart Filter Analysis
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-      <section class="xl:col-span-2 bg-slate-900/50 border border-slate-800 p-6 md:p-8 rounded-3xl backdrop-blur-sm">
-        <div class="flex items-center gap-3 mb-3">
-          <i data-lucide="cloud-lightning" class="text-blue-400"></i>
-          <h2 class="text-xl font-bold">Storm Sentry</h2>
+      <section class="xl:col-span-2 glass-panel p-6 md:p-8 rounded-3xl">
+        <div class="flex items-center gap-3 mb-2">
+          <i data-lucide="cloud-lightning" style="color:#ff751f"></i>
+          <h2 class="text-2xl font-bold text-white">Storm Sentry</h2>
         </div>
 
-        <p class="text-slate-400 text-sm mb-5">
-          Click any location on the map to predict runoff danger and identify where modular myco-filters should be deployed.
+        <p class="text-slate-400 text-sm md:text-base mb-6">
+          Click any point on the map to estimate rainfall-driven runoff risk and decide where modular myco-filters should be deployed first.
         </p>
 
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div class="lg:col-span-3">
-            <div id="map" class="h-[420px] rounded-2xl overflow-hidden border border-slate-800"></div>
+            <div id="map" class="h-[420px] rounded-2xl overflow-hidden border border-white/10"></div>
 
             <div class="mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div class="text-sm text-slate-400">
                 Selected Point:
-                <span id="selectedCoords" class="text-emerald-400 font-semibold">Not selected</span>
+                <span id="selectedCoords" class="font-semibold" style="color:#00bf63">Not selected</span>
               </div>
 
               <button
                 onclick="analyzeSelectedLocation()"
                 id="riskBtn"
-                class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-5 rounded-xl transition-all shadow-lg shadow-emerald-900/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="brand-btn font-bold py-3 px-5 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled
               >
                 ANALYZE SELECTED AREA
@@ -75,10 +192,10 @@
 
           <div class="lg:col-span-2">
             <div id="riskDisplay" class="space-y-4">
-              <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
-                <div class="flex justify-between border-b border-slate-800 pb-2 mb-3">
+              <div class="soft-card rounded-2xl p-4">
+                <div class="flex justify-between border-b border-white/10 pb-2 mb-3">
                   <span class="text-slate-500">Status</span>
-                  <span id="stormStatus" class="font-medium text-slate-300">Awaiting map selection</span>
+                  <span id="stormStatus" class="font-medium text-slate-200">Awaiting map selection</span>
                 </div>
 
                 <div class="space-y-3 text-sm">
@@ -99,12 +216,12 @@
 
                   <div class="flex justify-between">
                     <span class="text-slate-500">Next 24h Rain</span>
-                    <span id="rain24h" class="text-blue-400 font-mono font-bold">--</span>
+                    <span id="rain24h" class="font-mono font-bold" style="color:#00bf63">--</span>
                   </div>
 
                   <div class="flex justify-between">
                     <span class="text-slate-500">Next 5 Days Rain</span>
-                    <span id="rain5d" class="text-blue-400 font-mono font-bold">--</span>
+                    <span id="rain5d" class="font-mono font-bold" style="color:#ff751f">--</span>
                   </div>
                 </div>
 
@@ -113,7 +230,7 @@
                 </div>
               </div>
 
-              <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
+              <div class="soft-card rounded-2xl p-4">
                 <h3 class="text-sm uppercase tracking-wider text-slate-400 font-bold mb-3">
                   Deployment Recommendation
                 </h3>
@@ -127,17 +244,17 @@
         </div>
       </section>
 
-      <section class="bg-slate-900/50 border border-slate-800 p-6 md:p-8 rounded-3xl backdrop-blur-sm">
-        <div class="flex items-center gap-3 mb-6">
-          <i data-lucide="shield-alert" class="text-emerald-400"></i>
-          <h2 class="text-xl font-bold">Myco-Scanner AI</h2>
+      <section class="glass-panel p-6 md:p-8 rounded-3xl">
+        <div class="flex items-center gap-3 mb-2">
+          <i data-lucide="shield-alert" style="color:#00bf63"></i>
+          <h2 class="text-2xl font-bold text-white">Myco-Scanner AI</h2>
         </div>
 
-        <p class="text-slate-400 text-sm mb-6">
-          Upload a photo of the deployed mycelium filter to detect whether it is active, degrading, or ready for replacement.
+        <p class="text-slate-400 text-sm md:text-base mb-6">
+          Upload a photo of the deployed mycelium filter to determine whether it is healthy, degrading, or ready for replacement.
         </p>
 
-        <div class="border-2 border-dashed border-slate-800 rounded-2xl p-8 text-center hover:border-emerald-500/50 transition-colors">
+        <div class="upload-box rounded-2xl p-8 text-center transition-colors">
           <input
             type="file"
             id="imageInput"
@@ -146,34 +263,63 @@
             onchange="analyzeImage()"
           />
           <label for="imageInput" class="cursor-pointer block">
-            <i data-lucide="upload" class="mx-auto mb-4 text-slate-500"></i>
-            <span class="text-emerald-400 font-bold block">Upload Mycelium Sample</span>
+            <i data-lucide="upload" class="mx-auto mb-4 text-slate-400"></i>
+            <span class="font-bold block text-lg" style="color:#00bf63">Upload Mycelium Sample</span>
             <span class="text-slate-500 text-xs mt-2 block">PNG or JPG supported</span>
           </label>
         </div>
 
         <div id="imagePreviewWrap" class="mt-5 hidden">
-          <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Preview</p>
-          <img id="imagePreview" class="w-full h-52 object-cover rounded-2xl border border-slate-800" />
+          <div class="flex items-center justify-between mb-3 gap-3 flex-wrap">
+            <p class="text-xs uppercase tracking-wider text-slate-500">Preview</p>
+
+            <div class="flex gap-2">
+              <button
+                id="clearImageBtn"
+                type="button"
+                onclick="clearImageSelection()"
+                class="secondary-btn hidden px-3 py-2 rounded-lg text-sm font-bold border"
+                style="background: rgba(255,117,31,0.12); color:#ff751f; border-color: rgba(255,117,31,0.35);"
+              >
+                Clear Image
+              </button>
+
+              <button
+                id="analyzeAnotherBtn"
+                type="button"
+                onclick="startAnotherAnalysis()"
+                class="secondary-btn hidden px-3 py-2 rounded-lg text-sm font-bold border"
+                style="background: rgba(0,191,99,0.12); color:#00bf63; border-color: rgba(0,191,99,0.35);"
+              >
+                Analyze Another
+              </button>
+            </div>
+          </div>
+
+          <img id="imagePreview" class="preview-image w-full h-56 object-cover rounded-2xl border border-white/10" />
+        </div>
+
+        <div id="aiLoading" class="mt-5 hidden soft-card rounded-xl p-4 text-sm text-slate-300">
+          Analyzing image...
         </div>
 
         <div id="aiOutput" class="mt-6 space-y-3 hidden">
-          <div class="bg-slate-800/50 p-4 rounded-xl flex justify-between items-center">
+          <div class="soft-card p-4 rounded-xl flex justify-between items-center">
             <span class="text-slate-400 text-xs uppercase font-bold">Filter Health</span>
-            <span class="text-emerald-400 font-mono text-sm" id="aiStatus">--</span>
+            <span class="font-mono text-sm font-bold" id="aiStatus" style="color:#00bf63">--</span>
           </div>
 
-          <div class="bg-slate-800/50 p-4 rounded-xl flex justify-between items-center">
+          <div class="soft-card p-4 rounded-xl flex justify-between items-center">
             <span class="text-slate-400 text-xs uppercase font-bold">Efficiency</span>
             <span class="text-slate-200 font-semibold" id="aiEfficiency">--</span>
           </div>
 
-          <div class="bg-slate-800/50 p-4 rounded-xl flex justify-between items-center">
+          <div class="soft-card p-4 rounded-xl flex justify-between items-center">
             <span class="text-slate-400 text-xs uppercase font-bold">Confidence</span>
             <span class="text-slate-200 font-semibold" id="aiConfidence">--</span>
           </div>
 
-          <div class="bg-slate-800/50 p-4 rounded-xl">
+          <div class="soft-card p-4 rounded-xl">
             <span class="text-slate-400 text-xs uppercase font-bold block mb-2">Field Recommendation</span>
             <p id="aiMessage" class="text-sm text-slate-200 leading-6">--</p>
           </div>
@@ -181,28 +327,28 @@
       </section>
     </div>
 
-    <section class="mt-8 bg-slate-900/50 border border-slate-800 p-6 md:p-8 rounded-3xl backdrop-blur-sm">
-      <div class="flex items-center gap-3 mb-4">
-        <i data-lucide="thermometer-sun" class="text-orange-400"></i>
-        <h2 class="text-xl font-bold">Climate Projection Snapshot</h2>
+    <section class="mt-8 glass-panel p-6 md:p-8 rounded-3xl">
+      <div class="flex items-center gap-3 mb-3">
+        <i data-lucide="thermometer-sun" style="color:#ff751f"></i>
+        <h2 class="text-2xl font-bold text-white">Climate Projection Snapshot</h2>
       </div>
 
-      <p class="text-slate-400 text-sm mb-6">
-        This compares the selected area's approximate current baseline temperature with projected future warming stress.
+      <p class="text-slate-400 text-sm md:text-base mb-6">
+        Compare the selected area’s current average temperature with projected warming stress to anticipate future deployment conditions.
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
+        <div class="soft-card rounded-2xl p-4">
           <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Current Avg Temp</p>
-          <p id="climateCurrent" class="text-2xl font-black text-emerald-400">--</p>
+          <p id="climateCurrent" class="text-2xl font-black" style="color:#00bf63">--</p>
         </div>
 
-        <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
+        <div class="soft-card rounded-2xl p-4">
           <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Projected Avg Temp (2050)</p>
-          <p id="climateFuture" class="text-2xl font-black text-orange-400">--</p>
+          <p id="climateFuture" class="text-2xl font-black" style="color:#ff751f">--</p>
         </div>
 
-        <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
+        <div class="soft-card rounded-2xl p-4">
           <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Warming Delta</p>
           <p id="climateDelta" class="text-2xl font-black text-blue-400">--</p>
         </div>
@@ -212,8 +358,6 @@
 
   <script>
     lucide.createIcons();
-
-    const API_BASE = "";
 
     let selectedLat = null;
     let selectedLng = null;
@@ -246,16 +390,64 @@
 
       let classes = "text-center p-4 rounded-xl font-black tracking-widest mt-5 border ";
       if (level === "HIGH") {
-        classes += "bg-red-900/50 text-red-400 border-red-500/50";
+        classes += "text-white";
+        riskEl.style.background = "rgba(255,117,31,0.18)";
+        riskEl.style.borderColor = "rgba(255,117,31,0.45)";
+        riskEl.style.color = "#ff751f";
       } else if (level === "MEDIUM") {
-        classes += "bg-yellow-900/50 text-yellow-300 border-yellow-500/50";
+        classes += "text-white";
+        riskEl.style.background = "rgba(255,193,7,0.12)";
+        riskEl.style.borderColor = "rgba(255,193,7,0.35)";
+        riskEl.style.color = "#facc15";
       } else if (level === "LOW") {
-        classes += "bg-emerald-900/50 text-emerald-400 border-emerald-500/50";
+        classes += "text-white";
+        riskEl.style.background = "rgba(0,191,99,0.14)";
+        riskEl.style.borderColor = "rgba(0,191,99,0.45)";
+        riskEl.style.color = "#00bf63";
       } else {
+        riskEl.style.background = "";
+        riskEl.style.borderColor = "";
+        riskEl.style.color = "";
         classes += "bg-slate-800 text-slate-300 border-slate-700";
       }
 
       riskEl.className = classes;
+    }
+
+    function showImageActionButtons() {
+      document.getElementById("clearImageBtn").classList.remove("hidden");
+      document.getElementById("analyzeAnotherBtn").classList.remove("hidden");
+    }
+
+    function hideImageActionButtons() {
+      document.getElementById("clearImageBtn").classList.add("hidden");
+      document.getElementById("analyzeAnotherBtn").classList.add("hidden");
+    }
+
+    function resetAIResult() {
+      document.getElementById("aiOutput").classList.add("hidden");
+      document.getElementById("aiLoading").classList.add("hidden");
+      document.getElementById("aiStatus").innerText = "--";
+      document.getElementById("aiEfficiency").innerText = "--";
+      document.getElementById("aiConfidence").innerText = "--";
+      document.getElementById("aiMessage").innerText = "--";
+    }
+
+    function clearImageSelection() {
+      const input = document.getElementById("imageInput");
+      const preview = document.getElementById("imagePreview");
+      const previewWrap = document.getElementById("imagePreviewWrap");
+
+      input.value = "";
+      preview.src = "";
+      previewWrap.classList.add("hidden");
+      resetAIResult();
+      hideImageActionButtons();
+    }
+
+    function startAnotherAnalysis() {
+      clearImageSelection();
+      document.getElementById("imageInput").click();
     }
 
     async function analyzeSelectedLocation() {
@@ -271,7 +463,7 @@
       document.getElementById("stormStatus").innerText = "Fetching forecast and climate data...";
 
       try {
-        const res = await fetch(`${API_BASE}/api/storm-risk`, {
+        const res = await fetch(`/api/storm-risk`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -285,7 +477,7 @@
         const data = await res.json();
 
         if (!res.ok) {
-          throw new Error(data.error || "Storm risk request failed");
+          throw new Error(data.details || data.error || "Storm risk request failed");
         }
 
         document.getElementById("stormStatus").innerText = "Analysis complete";
@@ -353,11 +545,16 @@
       preview.src = URL.createObjectURL(file);
       previewWrap.classList.remove("hidden");
 
+      resetAIResult();
+      hideImageActionButtons();
+
       const formData = new FormData();
       formData.append("image", file);
 
+      document.getElementById("aiLoading").classList.remove("hidden");
+
       try {
-        const res = await fetch(`${API_BASE}/api/analyze`, {
+        const res = await fetch(`/api/analyze`, {
           method: "POST",
           body: formData
         });
@@ -365,9 +562,10 @@
         const data = await res.json();
 
         if (!res.ok) {
-          throw new Error(data.error || "Image analysis failed");
+          throw new Error(data.details || data.error || "Image analysis failed");
         }
 
+        document.getElementById("aiLoading").classList.add("hidden");
         document.getElementById("aiOutput").classList.remove("hidden");
         document.getElementById("aiStatus").innerText = String(data.status || "--").toUpperCase();
         document.getElementById("aiEfficiency").innerText =
@@ -376,7 +574,11 @@
           data.confidence !== undefined ? `${Math.round(data.confidence * 100)}%` : "--";
         document.getElementById("aiMessage").innerText =
           data.message || "No recommendation returned.";
+
+        showImageActionButtons();
       } catch (err) {
+        document.getElementById("aiLoading").classList.add("hidden");
+        showImageActionButtons();
         alert(err.message || "AI scan failed.");
       }
     }
