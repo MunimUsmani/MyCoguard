@@ -1,0 +1,8 @@
+.venv
+backend/node_modules
+backend/uploads
+ai/__pycache__
+__pycache__
+.git
+.gitignore
+.DS_Store
