@@ -67,7 +67,12 @@ function getPythonExecutable() {
     return path.join(ROOT_DIR, ".venv", "Scripts", "python.exe");
   }
 
-  return path.join(ROOT_DIR, ".venv", "bin", "python");
+  const localVenvPython = path.join(ROOT_DIR, ".venv", "bin", "python");
+  if (fs.existsSync(localVenvPython)) {
+    return localVenvPython;
+  }
+
+  return "python3";
 }
 
 function getRiskLevel(score) {
@@ -318,6 +323,6 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });

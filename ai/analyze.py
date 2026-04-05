@@ -9,7 +9,6 @@ from torchvision import transforms
 
 from model import create_model
 
-
 CLASS_NAMES = ["healthy", "degrading", "replace_now"]
 
 
@@ -22,9 +21,12 @@ def get_model_path():
     env_path = os.getenv("MODEL_PATH")
 
     if env_path:
-        return Path(env_path)
+        env_path_obj = Path(env_path)
+        if env_path_obj.is_absolute():
+            return env_path_obj
+        return (root / env_path_obj).resolve()
 
-    return root / "model" / "mycoguard_best.pth"
+    return root / "model" / "mycoguard_best_efficientnet.pth"
 
 
 def build_transform():
@@ -45,14 +47,16 @@ def load_trained_model():
     if not model_path.exists():
         raise FileNotFoundError(f"Model file not found: {model_path}")
 
+    arch = os.getenv("MODEL_ARCH", "efficientnet_b0")
     device = torch.device("cpu")
-    model = create_model()
+
+    model = create_model(arch=arch)
     state_dict = torch.load(model_path, map_location=device)
     model.load_state_dict(state_dict)
     model.to(device)
     model.eval()
 
-    return model, device
+    return model, device, str(model_path), arch
 
 
 def status_meta(status: str):
@@ -88,7 +92,7 @@ def compute_efficiency(probabilities):
 
 
 def analyze(img_path: str):
-    model, device = load_trained_model()
+    model, device, model_path, arch = load_trained_model()
     transform = build_transform()
 
     image = Image.open(img_path).convert("RGB")
@@ -110,6 +114,8 @@ def analyze(img_path: str):
         "efficiency": efficiency,
         "risk": meta["risk"],
         "confidence": confidence,
+        "model_arch": arch,
+        "model_path": model_path,
         "probabilities": {
             "healthy": round(float(probs[0]), 4),
             "degrading": round(float(probs[1]), 4),
