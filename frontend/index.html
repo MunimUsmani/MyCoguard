@@ -41,9 +41,7 @@
       </div>
     </header>
 
-    <!-- TOP GRID -->
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-      <!-- MAP + STORM -->
       <section class="xl:col-span-2 bg-slate-900/50 border border-slate-800 p-6 md:p-8 rounded-3xl backdrop-blur-sm">
         <div class="flex items-center gap-3 mb-3">
           <i data-lucide="cloud-lightning" class="text-blue-400"></i>
@@ -129,7 +127,6 @@
         </div>
       </section>
 
-      <!-- AI SCANNER -->
       <section class="bg-slate-900/50 border border-slate-800 p-6 md:p-8 rounded-3xl backdrop-blur-sm">
         <div class="flex items-center gap-3 mb-6">
           <i data-lucide="shield-alert" class="text-emerald-400"></i>
@@ -141,7 +138,13 @@
         </p>
 
         <div class="border-2 border-dashed border-slate-800 rounded-2xl p-8 text-center hover:border-emerald-500/50 transition-colors">
-          <input type="file" id="imageInput" class="hidden" accept="image/png,image/jpeg,image/jpg" onchange="analyzeImage()" />
+          <input
+            type="file"
+            id="imageInput"
+            class="hidden"
+            accept="image/png,image/jpeg,image/jpg"
+            onchange="analyzeImage()"
+          />
           <label for="imageInput" class="cursor-pointer block">
             <i data-lucide="upload" class="mx-auto mb-4 text-slate-500"></i>
             <span class="text-emerald-400 font-bold block">Upload Mycelium Sample</span>
@@ -178,7 +181,6 @@
       </section>
     </div>
 
-    <!-- CLIMATE PANEL -->
     <section class="mt-8 bg-slate-900/50 border border-slate-800 p-6 md:p-8 rounded-3xl backdrop-blur-sm">
       <div class="flex items-center gap-3 mb-4">
         <i data-lucide="thermometer-sun" class="text-orange-400"></i>
@@ -210,6 +212,8 @@
 
   <script>
     lucide.createIcons();
+
+    const API_BASE = "";
 
     let selectedLat = null;
     let selectedLng = null;
@@ -267,7 +271,7 @@
       document.getElementById("stormStatus").innerText = "Fetching forecast and climate data...";
 
       try {
-        const res = await fetch("http://localhost:5000/api/storm-risk", {
+        const res = await fetch(`${API_BASE}/api/storm-risk`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -353,7 +357,7 @@
       formData.append("image", file);
 
       try {
-        const res = await fetch("http://localhost:5000/api/analyze", {
+        const res = await fetch(`${API_BASE}/api/analyze`, {
           method: "POST",
           body: formData
         });
