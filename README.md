@@ -1,6 +1,6 @@
 # 🌿 MYCOGUARD
 
-**MycoGuard** is an AI-powered environmental monitoring and mycelium health analysis platform.
+**MycoGuard** is an AI-powered environmental monitoring and mycelium health analysis platform. 
 
 It combines:
 - **Storm risk prediction** using weather + climate APIs
