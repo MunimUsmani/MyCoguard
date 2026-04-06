@@ -211,15 +211,7 @@ Create this file:
 backend/.env
 
 Add:
-
-PORT=5000
-MODEL_ARCH=efficientnet_b0
-MODEL_PATH=model/mycoguard_best_efficientnet.pth
-PYTHON_PATH=python3
-What each variable does
-PORT
-
-The backend server will run on this port locally.
+Environment variables like weather api and model path etc the PORT on which your backend server will run locally.
 
 MODEL_ARCH
 
